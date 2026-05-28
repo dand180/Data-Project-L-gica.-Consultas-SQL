@@ -581,12 +581,20 @@ order by n_alquileres desc
 
 --62  Encuentra el número de películas por categoría estrenadas en 2006.
 with ventas_2006 as(
-	select film_id 
+	select film_id, title 
 	from film 
 	where release_year = 2006
-),
+)
+select b.name, Count(c.film_id) as n_peliculas
+from film_category as a
+left join category as b
+	on a.category_id = b.category_id 
+left join ventas_2006 as c
+	on a.film_id = c.film_id 
+group by b.name
+order by n_peliculas desc
 	
-select b.name, Count(a.film_id) as n_peliculas
+'select b.name, Count(a.film_id) as n_peliculas
 from film_category as a
 left join category as b
 	on a.category_id = b.category_id 
@@ -594,7 +602,7 @@ left join film as c
 	on a.film_id = c.film_id 
 where c.release_year = 2006
 group by b.name
-order by n_peliculas desc
+order by n_peliculas desc'
 
 --63 Obtén todas las combinaciones posibles de trabajadores con las tiendas que tenemos.
 
